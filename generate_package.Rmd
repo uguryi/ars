@@ -42,14 +42,12 @@ The format we will use will be the following
 #' @export
 
 ```{r}
-setwd("~/repos/stat243/pack")
+setwd("~/repos/ars/pack")
 document()
 ```
 
 
 ```{r}
-install("pack")
-?ars
-ars()
+install_github("uguryi/ars")
 ```
 

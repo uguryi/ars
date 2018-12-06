@@ -14,19 +14,19 @@
 #############
 
 #install.packages("assertthat")
-library(assertthat)
+# library(assertthat)
 
 #install.packages("Deriv")
 #library("Deriv")
 
 #install.packages("distr")
-library(distr)
-
-#install.packages("Ecfun")
-#library(Ecfun)
-
-#install.packages("testthat")
-library(testthat)
+# library(distr)
+# 
+# #install.packages("Ecfun")
+# #library(Ecfun)
+# 
+# #install.packages("testthat")
+# library(testthat)
 
 ################
 # ARS FUNCTION #
