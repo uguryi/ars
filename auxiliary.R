@@ -2,6 +2,43 @@
 # AUXILIARY FUNCTION #
 ######################
 
+# Define the function to check parameters
+check_param <- function(n, 
+                        g,
+                        h, 
+                        h_prime, 
+                        D_left, 
+                        D_right, 
+                        k, 
+                        step,
+                        center){
+  
+assertthat::assert_that(is.numeric(n), msg = "Please provide n as a number")
+assertthat::assert_that(is.numeric(D_left), msg = "Please provide D_left as a number")
+assertthat::assert_that(is.numeric(D_right), msg = "Please provide D_right as a number")
+assertthat::assert_that(is.numeric(k), msg = "Please provide k as a number")
+assertthat::assert_that(is.numeric(step), msg = "Please provide step as a number")
+assertthat::assert_that(is.numeric(center), msg = "Please provide center as a number")
+if(D_left == D_right)
+  stop("Please provide different D_left, D_right", call. = FALSE)
+if(identical(g, NA) && identical(h,NA))
+  stop("Please provide either g or h", call. = FALSE)
+if(!identical(g, NA)){
+  if(class(g) != "function"){
+    stop("Please provide g as a function", call. = FALSE)
+  }
+}
+if(!identical(h, NA)){
+  if(class(h) != "function"){
+    stop("Please provide h as a function", call. = FALSE)
+  }
+}
+if(!identical(h_prime, NA)){
+  if(class(h_prime) != "function"){
+    stop("Please provide h_prime as a function", call. = FALSE)
+  }
+}}
+
 # Define function to initialize T_k
 init_T_k <- function(k, D_left, D_right, h_prime, step, center) {
 
