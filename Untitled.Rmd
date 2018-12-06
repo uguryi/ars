@@ -1,0 +1,17 @@
+---
+title: "package_creator"
+author: "Ramon Crespo"
+date: "12/5/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library("devtools")
+library(roxygen2)
+
+create("arspack")
+```
+
+```{r}
+file.copy("code-sketch-12-04-2018.R", "arspack/R" )
+```
