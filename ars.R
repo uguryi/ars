@@ -174,7 +174,7 @@ ars <- function(n,
     piece_probs <- denom/sum(denom)
     piece_probs <- ifelse(piece_probs < 0, 0, piece_probs) # sometimes probs can be negative by mistake???
     piece_selected <- which(rmultinom(1, 1, piece_probs) != 0)
-    x_star <- r(AbscontDistribution(d=calc_nom_s_j(piece_selected), 
+    x_star <- distr::r(distr::AbscontDistribution(d=calc_nom_s_j(piece_selected), 
                                     low1=z[piece_selected], 
                                     up1=z[piece_selected+1]))(1)
     
