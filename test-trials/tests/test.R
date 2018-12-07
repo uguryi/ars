@@ -2,11 +2,11 @@
 ##  TEST  ##
 ############
 
-#install.packages("testthat")
-library(testthat)
+## install.packages("testthat")
+#  library(testthat)
 
-#install.packages("rmutil")
-library(rmutil)
+## install.packages("rmutil")
+#  library(rmutil)
 
 
 ## Test function
@@ -67,7 +67,7 @@ dis_unif <- function(x){
 dis_laplace <- function(x, m = 0, s = 1) {
  return(exp(-abs(x-m)/s)/(2*s))
  }
-## test_fun(1000, dis_laplace, rlaplace, "laplace distribution", D_left = -10, D_right = 10)
+## test_fun(1000, dis_laplace, rmutil::rlaplace, "laplace distribution", D_left = -10, D_right = 10)
 
 
 ##***************************************************************
