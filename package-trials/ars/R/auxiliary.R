@@ -15,16 +15,7 @@
 #' 
 #' @return If an error is encounter, provides the user some feedback regarding the source of error.
 #'
-#' @examples 
-#'
-#'
-
-
-######################
-# AUXILIARY FUNCTION #
-######################
-
-# Define the function to check parameters
+#' @export
 check_param <- function(n, 
                         g,
                         h, 

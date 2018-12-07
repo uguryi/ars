@@ -15,16 +15,11 @@
 #' @param center the desired center (optional), default = 0
 #' 
 #' @return Results from the adaptive rejection sample from the information provided by the user
-#'
+#' 
 #' @examples 
-#' final_sample <- ars(n=1000, g=dnorm , D_left = -Inf, D_right = Inf, k = 20)
-#' hist(final_sample, breaks = 50)
-#'
-
-################
-# ARS FUNCTION #
-################
-
+#' ars(n=1000, g=dnorm , D_left = -Inf, D_right = Inf, k = 20)
+#' 
+#' @export
 ars <- function(n, 
                 g = NA, 
                 h = NA, 

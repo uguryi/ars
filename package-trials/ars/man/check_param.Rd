@@ -32,7 +32,3 @@ If an error is encounter, provides the user some feedback regarding the source o
 The objective of this function is to test the parameter inputs of the user. It checks
 for validity of the inputs and returns comments if an error is encountered with the inputs.
 }
-\examples{
-
-
-}

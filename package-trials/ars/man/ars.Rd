@@ -35,7 +35,6 @@ performs adaptive-rejection sampling based on the tangent approach described
 by Gilks et al. (1992).
 }
 \examples{
-final_sample <- ars(n=1000, g=dnorm , D_left = -Inf, D_right = Inf, k = 20)
-hist(final_sample, breaks = 50)
+ars(n=1000, g=dnorm , D_left = -Inf, D_right = Inf, k = 20)
 
 }

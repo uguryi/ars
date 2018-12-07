@@ -42,10 +42,7 @@ The format we will use will be the following
 #'
 #' @export
 
-```{r}
-setwd("~/repos/ars/package-trials/ars/")
-document()
-```
+
 ```{r}
 setwd("~/repos/ars/package-trials/ars/")
 document()
@@ -53,7 +50,8 @@ document()
 
 
 ```{r}
-install("pack")
+setwd("~/repos/ars/package-trials")
+install("ars")
 ?ars
 ```
 
