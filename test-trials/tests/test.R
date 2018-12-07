@@ -49,7 +49,7 @@ dis_logistic <- function(x){
 dis_norm <- function(x) {
 return((1/(sqrt(2*pi)))*exp(-(x^2)/2))
 }
-#test_fun(1000, dis_norm, rnorm, "normal distribution", D_left = -10, D_right = 10)
+## test_fun(1000, dis_norm, rnorm, "normal distribution", D_left = -10, D_right = 10)
 
 
 ##***************************************************************
