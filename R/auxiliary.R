@@ -1,8 +1,21 @@
-######################
-# AUXILIARY FUNCTION #
-######################
-
-# Define the function to check parameters
+#' Adaptive-Rejection Sampling Parameters Test
+#'
+#' The objective of this function is to test the parameter inputs of the user. It checks
+#' for validity of the inputs and returns comments if an error is encountered with the inputs.
+#'
+#' @param n The number of desired samples
+#' @param g The density function of interest
+#' @param h The log of g (users can provide either g or h)
+#' @param h_prime H prime function (optional)
+#' @param D_left The desired left end of domain (optional), default = -Inf
+#' @param D_right The desired right end of domain (optional), default = Inf
+#' @param k The number of desired initial abscissae (optional), default = 10
+#' @param step The desired width (optional), default = 3
+#' @param center the desired center (optional), default = 0
+#' 
+#' @return If an error is encounter, provides the user some feedback regarding the source of error.
+#'
+#' @export
 check_param <- function(n, 
                         g,
                         h, 
@@ -135,6 +148,39 @@ calc_z <- function(k, h_x, h_prime_x, T_k, D_left, D_right, step){
   z <- ((hp1 - hp2) < 1e-5)*0.5*(t1+t2) + ((hp1 - hp2) >= 1e-5)*(h2 - h1 - t2*hp2 + t1*hp1)*check
   z<- c(zl, z, zr)
   return(z)
+}
+
+# Define function to calculate u_j
+calc_u_j <- function(j, h_x, T_k, h_prime_x) {
+  u_j <- function(x) {
+    h_x[j] + (x - T_k[j]) * h_prime_x[j]
+  }
+  return(u_j)
+}
+
+# Define function to calculate denominator of s_j
+calc_denom_s_j <- function(j, h_x, T_k, h_prime_x, z) {
+  s_j <- function(x) {
+    exp(h_x[j] + (x - T_k[j]) * h_prime_x[j])
+  }
+  denom_s_j <- integrate(s_j, lower = z[j], upper = z[j+1])$value
+  return(denom_s_j)
+}
+
+# Define function to calculate nominator of s_j
+calc_nom_s_j <- function(j, h_x, T_k, h_prime_x) {
+  nom_s_j <- function(x) {
+    exp(h_x[j] + (x - T_k[j]) * h_prime_x[j])
+  }
+  return(nom_s_j)
+}
+
+# Define function to calculate l_j
+calc_l_j <- function(j, T_k, h_x) {
+  l_j <- function(x) {
+    ((T_k[j+1] - x) * h_x[j] + (x - T_k[j]) * h_x[j+1]) / (T_k[j+1] - T_k[j])
+  } 
+  return(l_j)
 }
 
 # Define function to update z

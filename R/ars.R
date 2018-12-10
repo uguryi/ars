@@ -1,7 +1,25 @@
-################
-# ARS FUNCTION #
-################
-
+#' Adaptive-Rejection Sampling
+#'
+#' The objective of this package is to create a function that
+#' performs adaptive-rejection sampling based on the tangent approach described 
+#' by Gilks et al. (1992).
+#'
+#' @param n The number of desired samples
+#' @param g The density function of interest
+#' @param h The log of g (users can provide either g or h)
+#' @param h_prime H prime function (optional)
+#' @param D_left The desired left end of domain (optional), default = -Inf
+#' @param D_right The desired right end of domain (optional), default = Inf
+#' @param k The number of desired initial abscissae (optional), default = 10
+#' @param step The desired width (optional), default = 3
+#' @param center the desired center (optional), default = 0
+#' 
+#' @return Results from the adaptive rejection sample from the information provided by the user
+#' 
+#' @examples 
+#' ars(n=1000, g=dnorm , D_left = -Inf, D_right = Inf, k = 20)
+#' 
+#' @export
 ars <- function(n, 
                 g = NA, 
                 h = NA, 
@@ -75,41 +93,8 @@ ars <- function(n,
   # Calculate z
   z <- calc_z(k, h_x, h_prime_x, T_k, D_left, D_right, step)
   
-  # Define function to calculate u_j
-  calc_u_j <- function(j) {
-    u_j <- function(x) {
-      h_x[j] + (x - T_k[j]) * h_prime_x[j]
-    }
-    return(u_j)
-  }
-  
-  # Define function to calculate denominator of s_j
-  calc_denom_s_j <- function(j) {
-    s_j <- function(x) {
-      exp(h_x[j] + (x - T_k[j]) * h_prime_x[j])
-    }
-    denom_s_j <- integrate(s_j, lower = z[j], upper = z[j+1])$value
-    return(denom_s_j)
-  }
-  denom <- sapply(1:k, calc_denom_s_j)
- 
-  
-  # Define function to calculate nominator of s_j
-  calc_nom_s_j <- function(j) {
-    nom_s_j <- function(x) {
-      exp(h_x[j] + (x - T_k[j]) * h_prime_x[j])
-    }
-    return(nom_s_j)
-  }
-  
-  # Define function to calculate l_j
-  calc_l_j <- function(j) {
-    l_j <- function(x) {
-      ((T_k[j+1] - x) * h_x[j] + (x - T_k[j]) * h_x[j+1]) / (T_k[j+1] - T_k[j])
-    } 
-    return(l_j)
-  }
-  
+  # Calculate denominator of s_j
+  denom <- sapply(1:k, calc_denom_s_j, h_x, T_k, h_prime_x, z)
   
   while (count <= n) {
     
@@ -150,7 +135,7 @@ ars <- function(n,
     piece_probs <- denom/sum(denom)
     piece_probs <- ifelse(piece_probs < 0, 0, piece_probs) # sometimes probs can be negative by mistake???
     piece_selected <- which(rmultinom(1, 1, piece_probs) != 0)
-    x_star <- distr::r(distr::AbscontDistribution(d=calc_nom_s_j(piece_selected), 
+    x_star <- distr::r(distr::AbscontDistribution(d=calc_nom_s_j(piece_selected, h_x, T_k, h_prime_x), 
                                     low1=z[piece_selected], 
                                     up1=z[piece_selected+1]))(1)
     
@@ -165,11 +150,11 @@ ars <- function(n,
     if (l_interval == 0 || l_interval == k) {
       l_k_x_star <- -Inf
     } else {
-      l_k_x_star <- calc_l_j(l_interval)(x_star)
+      l_k_x_star <- calc_l_j(l_interval, T_k, h_x)(x_star)
     }
     
     # Calculate u_k_x_star
-    u_k_x_star <- calc_u_j(u_interval)(x_star)
+    u_k_x_star <- calc_u_j(u_interval, h_x, T_k, h_prime_x)(x_star)
     
     # Test whether to accept or reject the sample x_star
     if (w <= exp(l_k_x_star - u_k_x_star)) {
