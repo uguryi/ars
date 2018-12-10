@@ -1,8 +1,8 @@
-#' Adaptive-Rejection Sampling
+#' Adaptive Rejection Sampling
 #'
-#' The objective of this package is to create a function that
-#' performs adaptive-rejection sampling based on the tangent approach described 
-#' by Gilks et al. (1992).
+#' The objective of this package is to create a function that 
+#' performs adaptive rejection sampling based on the tangent approach described 
+#' by Gilks and Wild (1992).
 #'
 #' @param n The number of desired samples
 #' @param g The density function of interest
@@ -11,8 +11,8 @@
 #' @param D_left The desired left end of domain (optional), default = -Inf
 #' @param D_right The desired right end of domain (optional), default = Inf
 #' @param k The number of desired initial abscissae (optional), default = 10
-#' @param step The desired width (optional), default = 3
-#' @param center the desired center (optional), default = 0
+#' @param step The desired width we use to choose left/right end if the domain is unbounded (optional), default = 3
+#' @param center The desired center to search for left/right end if the domain is unbounded (optional), default = 0
 #' 
 #' @return Results from the adaptive rejection sample from the information provided by the user
 #' 
@@ -29,19 +29,6 @@ ars <- function(n,
                 k = 10, 
                 step = 3,
                 center = 0) {
-  
-  ## Input:
-  ## n: the number of desired samples 
-  ## g: the density function of interest
-  ## h: the log of g (users can provide either g or h)
-  ## h_prime: h prime function (optional)
-  ## D_left/D_right: the desired left/right end of domain (optional), default = -Inf/Inf
-  ## k: the number of desired initial abscissae (optional), default = 10
-  ## step: the desired width we use to choose left/right end if the domain is  
-  ##       unbounded(optional), default = 3
-  ## center: the desired center to search for left/right ends if the domain is  
-  ##       unbounded(optional), default = 0
-  
   
   #source("auxiliary.R")
   
@@ -133,7 +120,7 @@ ars <- function(n,
     
     # Sample x_star from s_k
     piece_probs <- denom/sum(denom)
-    piece_probs <- ifelse(piece_probs < 0, 0, piece_probs) # sometimes probs can be negative by mistake???
+    piece_probs <- ifelse(piece_probs < 0, 0, piece_probs)
     piece_selected <- which(rmultinom(1, 1, piece_probs) != 0)
     x_star <- distr::r(distr::AbscontDistribution(d=calc_nom_s_j(piece_selected, h_x, T_k, h_prime_x), 
                                     low1=z[piece_selected], 

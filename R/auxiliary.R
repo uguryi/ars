@@ -1,21 +1,9 @@
-#' Adaptive-Rejection Sampling Parameters Test
-#'
-#' The objective of this function is to test the parameter inputs of the user. It checks
-#' for validity of the inputs and returns comments if an error is encountered with the inputs.
-#'
-#' @param n The number of desired samples
-#' @param g The density function of interest
-#' @param h The log of g (users can provide either g or h)
-#' @param h_prime H prime function (optional)
-#' @param D_left The desired left end of domain (optional), default = -Inf
-#' @param D_right The desired right end of domain (optional), default = Inf
-#' @param k The number of desired initial abscissae (optional), default = 10
-#' @param step The desired width (optional), default = 3
-#' @param center the desired center (optional), default = 0
-#' 
-#' @return If an error is encounter, provides the user some feedback regarding the source of error.
-#'
-#' @export
+#######################
+# Auxiliary Functions #
+#######################
+
+# Define function to test the parameter inputs of the user. It checks for 
+# validity of the inputs and returns comments if an error is encountered with the inputs.
 check_param <- function(n, 
                         g,
                         h, 
@@ -26,31 +14,38 @@ check_param <- function(n,
                         step,
                         center){
   
-assertthat::assert_that(is.numeric(n), msg = "Please provide n as a number")
-assertthat::assert_that(is.numeric(D_left), msg = "Please provide D_left as a number")
-assertthat::assert_that(is.numeric(D_right), msg = "Please provide D_right as a number")
-assertthat::assert_that(is.numeric(k), msg = "Please provide k as a number")
-assertthat::assert_that(is.numeric(step), msg = "Please provide step as a number")
-assertthat::assert_that(is.numeric(center), msg = "Please provide center as a number")
-if(D_left == D_right)
-  stop("Please provide different D_left, D_right", call. = FALSE)
-if(identical(g, NA) && identical(h,NA))
-  stop("Please provide either g or h", call. = FALSE)
-if(!identical(g, NA)){
-  if(class(g) != "function"){
-    stop("Please provide g as a function", call. = FALSE)
+  assertthat::assert_that(is.numeric(n), msg = "Please provide n as a number")
+  assertthat::assert_that(is.numeric(D_left), msg = "Please provide D_left as a number")
+  assertthat::assert_that(is.numeric(D_right), msg = "Please provide D_right as a number")
+  assertthat::assert_that(is.numeric(k), msg = "Please provide k as a number")
+  assertthat::assert_that(is.numeric(step), msg = "Please provide step as a number")
+  assertthat::assert_that(is.numeric(center), msg = "Please provide center as a number")
+  
+  if(D_left == D_right)
+    stop("Please provide different D_left, D_right", call. = FALSE)
+  
+  if(identical(g, NA) && identical(h,NA))
+    stop("Please provide either g or h", call. = FALSE)
+  
+  if(!identical(g, NA)){
+    if(class(g) != "function"){
+      stop("Please provide g as a function", call. = FALSE)
+    }
   }
+  
+  if(!identical(h, NA)){
+    if(class(h) != "function"){
+      stop("Please provide h as a function", call. = FALSE)
+    }
+  }
+  
+  if(!identical(h_prime, NA)){
+    if(class(h_prime) != "function"){
+      stop("Please provide h_prime as a function", call. = FALSE)
+    }
+  }
+  
 }
-if(!identical(h, NA)){
-  if(class(h) != "function"){
-    stop("Please provide h as a function", call. = FALSE)
-  }
-}
-if(!identical(h_prime, NA)){
-  if(class(h_prime) != "function"){
-    stop("Please provide h_prime as a function", call. = FALSE)
-  }
-}}
 
 # Define function to initialize T_k
 init_T_k <- function(k, D_left, D_right, h_prime, step, center) {
@@ -191,7 +186,8 @@ calc_z_new <- function(z, k, l_interval, h_x, h_prime_x, T_k) {
     if(h_prime_x[1] - h_prime_x[2] < 1e-5) 
       z_new <- (T_k[1]+T_k[2])/2
     else
-      z_new <- (h_x[2] - h_x[1] - T_k[2] * h_prime_x[2] + T_k[1] * h_prime_x[1])/(h_prime_x[1] - h_prime_x[2])
+      z_new <- (h_x[2] - h_x[1] - T_k[2] * h_prime_x[2] + T_k[1] * h_prime_x[1])/
+        (h_prime_x[1] - h_prime_x[2])
     z <- append(z, z_new, after=1)
     return(z)
   } else if (l_interval == k) {
@@ -200,7 +196,8 @@ calc_z_new <- function(z, k, l_interval, h_x, h_prime_x, T_k) {
     if(h_prime_x[k] - h_prime_x[k+1] < 1e-5) 
       z_new <- (T_k[k]+T_k[k+1])/2
     else
-      z_new <- (h_x[k+1] - h_x[k] - T_k[k+1] * h_prime_x[k+1] + T_k[k] * h_prime_x[k])/(h_prime_x[k] - h_prime_x[k+1])
+      z_new <- (h_x[k+1] - h_x[k] - T_k[k+1] * h_prime_x[k+1] + T_k[k] * h_prime_x[k])/
+        (h_prime_x[k] - h_prime_x[k+1])
     z <- append(z, z_new, after=k)
     return(z)
   } else {
@@ -212,7 +209,8 @@ calc_z_new <- function(z, k, l_interval, h_x, h_prime_x, T_k) {
       if(h_prime_x[j-1] - h_prime_x[j] < 1e-5) 
         new <- (T_k[j]+T_k[j-1])/2
       else
-        new <- (h_x[j] - h_x[j-1] - T_k[j] * h_prime_x[j] + T_k[j-1] * h_prime_x[j-1])/(h_prime_x[j-1] - h_prime_x[j])
+        new <- (h_x[j] - h_x[j-1] - T_k[j] * h_prime_x[j] + T_k[j-1] * h_prime_x[j-1])/
+          (h_prime_x[j-1] - h_prime_x[j])
       
       z_new <- append(z_new, new)
     }
@@ -261,19 +259,3 @@ calc_denom_s_j_new <- function(z, k, denom, l_interval, h_x, h_prime_x, T_k) {
     return(denom)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
