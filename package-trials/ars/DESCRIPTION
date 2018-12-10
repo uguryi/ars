@@ -10,5 +10,6 @@ LazyData: true
 Imports:
 	assertthat,
 	distr,
-	testthat
+	testthat,
+	rmutil
 RoxygenNote: 6.1.0.9000
