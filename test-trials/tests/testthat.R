@@ -41,7 +41,7 @@ test_fun <- function(n, fun, rfun, fun_name, D_left, D_right){
 dis_logistic <- function(x){
   return(exp(x)/(1+exp(x))^2)
 }
-## test_fun(1000, dis_logistic, rlogis, "logistic distribution", D_left = -10, D_right = 10)
+test_fun(1000, dis_logistic, rlogis, "logistic distribution", D_left = -10, D_right = 10)
 
 
 ##***************************************************************
@@ -49,7 +49,7 @@ dis_logistic <- function(x){
 dis_norm <- function(x) {
 return((1/(sqrt(2*pi)))*exp(-(x^2)/2))
 }
-## test_fun(1000, dis_norm, rnorm, "normal distribution", D_left = -10, D_right = 10)
+test_fun(1000, dis_norm, rnorm, "normal distribution", D_left = -10, D_right = 10)
 
 
 ##***************************************************************
@@ -59,7 +59,7 @@ dis_unif <- function(x){
   else
     return(0)
 }
-## test_fun(1000, dis_unif, runif, "uniform distribution", D_left = 0, D_right = 1)
+test_fun(1000, dis_unif, runif, "uniform distribution", D_left = 0, D_right = 1)
 
 
 ##***************************************************************
@@ -67,7 +67,7 @@ dis_unif <- function(x){
 dis_laplace <- function(x, m = 0, s = 1) {
  return(exp(-abs(x-m)/s)/(2*s))
  }
-## test_fun(1000, dis_laplace, rmutil::rlaplace, "laplace distribution", D_left = -10, D_right = 10)
+test_fun(1000, dis_laplace, rmutil::rlaplace, "laplace distribution", D_left = -10, D_right = 10)
 
 
 ##***************************************************************
@@ -78,7 +78,7 @@ dis_gamma <- function(x, a = 1, b = 1){
 r_gamma <- function(n){
   return(rgamma(n, shape = 1))
 }
-## test_fun(1000, dis_gamma, r_gamma, "gamma distribution", D_left = 0.01, D_right = Inf)
+test_fun(1000, dis_gamma, r_gamma, "gamma distribution", D_left = 0.01, D_right = Inf)
 
 
 ##***************************************************************
@@ -87,7 +87,7 @@ dis_nc <- function(x){
   p <- 0.5*(1/sqrt(2*pi))*exp(-(x^2)/2) + 0.5*(1/sqrt(2*pi))*exp(-((x-3)^2)/2)
   return(p)
 }
-## test_fun(1000, fun = dis_nc, rfun = NA , "mixture of normal distributions", D_left = -10, D_right = 10)
+test_fun(1000, fun = dis_nc, rfun = NA , "mixture of normal distributions", D_left = -10, D_right = 10)
 
 
 
