@@ -35,9 +35,6 @@ test_fun <- function(n, fun, rfun, fun_name, D_left, D_right){
   
 ##**************************************************************
 ## logistic distribution
-dis_logistic <- function(x){
-  return(exp(x)/(1+exp(x))^2)
-}
 test_that("logistic distribution",
   {dis_logistic <- function(x){
     return(exp(x)/(1+exp(x))^2)
