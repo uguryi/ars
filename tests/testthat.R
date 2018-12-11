@@ -1,3 +1,3 @@
 library(testthat)
-library("ars")
+library(ars)
 test_check("ars")
