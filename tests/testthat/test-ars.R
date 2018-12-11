@@ -2,10 +2,6 @@
 ##  TESTS  ##
 #############
 
-library(testthat)
-test_check("ars")
-
-
 ## Test function
 ## Input:
 ## n: sample size
