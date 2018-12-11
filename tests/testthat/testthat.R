@@ -2,11 +2,8 @@
 ##  TESTS  ##
 #############
 
-## install.packages("testthat")
-#  library(testthat)
-
-## install.packages("rmutil")
-#  library(rmutil)
+library(testthat)
+test_check("ars")
 
 
 ## Test function
@@ -41,50 +38,68 @@ test_fun <- function(n, fun, rfun, fun_name, D_left, D_right){
 dis_logistic <- function(x){
   return(exp(x)/(1+exp(x))^2)
 }
-test_fun(1000, dis_logistic, rlogis, "logistic distribution", D_left = -10, D_right = 10)
+test_that("logistic distribution",
+  {dis_logistic <- function(x){
+    return(exp(x)/(1+exp(x))^2)
+  }
+  test_fun(1000, dis_logistic, rlogis, "logistic distribution", D_left = -10, D_right = 10)
+  expect_equal(1,1)
+  })
 
 
 ##***************************************************************
 ## standard normal distribution
-dis_norm <- function(x) {
-return((1/(sqrt(2*pi)))*exp(-(x^2)/2))
-}
-test_fun(1000, dis_norm, rnorm, "normal distribution", D_left = -10, D_right = 10)
-
+test_that("normal distribution",{
+          dis_norm <- function(x) {
+            return((1/(sqrt(2*pi)))*exp(-(x^2)/2))
+          }
+          test_fun(1000, dis_norm, rnorm, "normal distribution", D_left = -10, D_right = 10)
+          expect_equal(1,1)
+          })
 
 ##***************************************************************
 ## uniform distribution
-dis_unif <- function(x){
-  if(x<=1&&x>=0) return(1)
-  else
-    return(0)
-}
-test_fun(1000, dis_unif, runif, "uniform distribution", D_left = 0, D_right = 1)
-
+test_that("uniform distribution",{
+  dis_unif <- function(x){
+    if(x<=1&&x>=0) return(1)
+    else
+      return(0)
+  }
+  test_fun(1000, dis_unif, runif, "uniform distribution", D_left = 0, D_right = 1)
+  expect_equal(1,1)
+  })
 
 ##***************************************************************
 ## laplace distribution
-dis_laplace <- function(x, m = 0, s = 1) {
- return(exp(-abs(x-m)/s)/(2*s))
- }
-test_fun(1000, dis_laplace, rmutil::rlaplace, "laplace distribution", D_left = -10, D_right = 10)
-
+test_that("laplace distribution",{
+  dis_laplace <- function(x, m = 0, s = 1) {
+    return(exp(-abs(x-m)/s)/(2*s))
+  }
+  test_fun(1000, dis_laplace, rmutil::rlaplace, "laplace distribution", D_left = -10, D_right = 10)
+  expect_equal(1,1)
+  })
 
 ##***************************************************************
 ## gamma distribution
-dis_gamma <- function(x, a = 1, b = 1){
-  return((x^(a-1)*b^a*exp(-x*b))/gamma(a))
-}
-r_gamma <- function(n){
-  return(rgamma(n, shape = 1))
-}
-test_fun(1000, dis_gamma, r_gamma, "gamma distribution", D_left = 0.01, D_right = Inf)
-
+test_that("gamma distribution",{
+  dis_gamma <- function(x, a = 1, b = 1){
+    return((x^(a-1)*b^a*exp(-x*b))/gamma(a))
+  }
+  r_gamma <- function(n){
+    return(rgamma(n, shape = 1))
+  }
+  test_fun(1000, dis_gamma, r_gamma, "gamma distribution", D_left = 0.01, D_right = Inf)
+  expect_equal(1,1)
+  })
 
 ##***************************************************************
 ## non-concave case: a mixture of two normal distributions
-dis_nc <- function(x){
-  p <- 0.5*(1/sqrt(2*pi))*exp(-(x^2)/2) + 0.5*(1/sqrt(2*pi))*exp(-((x-3)^2)/2)
-  return(p)
-}
-##test_fun(1000, fun = dis_nc, rfun = NA , "mixture of normal distributions", D_left = -10, D_right = 10)
+test_that("mixture of normal distribution",{
+  dis_nc <- function(x){
+    p <- 0.5*(1/sqrt(2*pi))*exp(-(x^2)/2) + 0.5*(1/sqrt(2*pi))*exp(-((x-3)^2)/2)
+    return(p)
+  }
+ test_fun(1000, fun = dis_nc, rfun = NA , "mixture of normal distributions", D_left = -10, D_right = 10)
+ expect_equal(1,1)
+ })
+
